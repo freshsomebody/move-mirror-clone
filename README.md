@@ -25,7 +25,7 @@ The clone of Move Mirror is on [http://localhost:3000](http://localhost:3000), a
 Once the page is ready, the right side is your webcam video with skeleton estimated by PoseNet in realtime.
 The left side is the most similar mirror image at this moment.
 
-> Currently the mirror image base has not well covered all possible poses yet. If you are interested in contributing images, please refer the Development > Mirror images and Development > vp tree sections.
+> Currently the mirror image base has not well covered all possible poses yet. If you are interested in contributing images, please refer [issue #1](https://github.com/freshsomebody/move-mirror-clone/issues/1).
 
 
 ## Development
