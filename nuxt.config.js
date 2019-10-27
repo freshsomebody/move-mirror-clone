@@ -63,5 +63,8 @@ export default {
     */
     extend (config, ctx) {
     }
-  }
+  },
+
+  // Ignore debug pages on production
+  ignore: (process.env.NODE_ENV === 'production' ? ['pages/debug/**'] : [])
 }
