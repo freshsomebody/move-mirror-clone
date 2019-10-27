@@ -33,12 +33,12 @@ The left side is the most similar mirror image at this moment.
 ### Mirror images
 Mirror images are used to match the pose in the user webcam video and are stored at **~assets/images/mirror-poses**.
 
-> **NOTE: ** You will need to rebuild the vp tree whenever you update the mirror image base. Please refer the vp tree section.
+> **NOTE:** You will need to rebuild the vp tree whenever you update the mirror image base. Please refer the vp tree section.
 
 ### Debugging images
 Stored at **~assets/images/debug** and used for the debugging tool [http://localhost:3000/debug/matching](http://localhost:3000/debug/matching).
 
-> **NOTE: ** You don't need to rebuild the vp tree when you update the debugging images.
+> **NOTE:** You don't need to rebuild the vp tree when you update the debugging images.
 
 ### vp tree
 To quickly retrieve the most similar mirror image, the normalized pose data of mirror images will be built into a vp tree.
