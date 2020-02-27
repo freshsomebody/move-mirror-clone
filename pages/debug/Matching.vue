@@ -14,7 +14,7 @@
 
     <img
       ref="debugImage"
-      :src="require(`~/assets/images/debug/${selectedImage}`)"
+      :src="selectedImageSrc"
       @load="estimateAndMatchPose"
     >
 
@@ -23,54 +23,56 @@
     <img
       v-for="image in mirrorImages"
       :key="image"
-      class="mirrorImage"
       :src="require(`~/assets/images/mirror-poses/${image}`)"
+      class="mirrorImage"
     >
   </div>
 </template>
 
 <script>
-import { vectorizeAndNormalize } from 'posenet-similarity'
-import PosenetMixin from '@/mixins/posenet.mixin'
+import { ref, computed, onMounted, watch } from '@vue/composition-api'
+import usePoseNetEstimation from '@/composition-functions/usePoseNetEstimation'
 
 export default {
-  mixins: [
-    PosenetMixin
-  ],
+  setup (props, { root }) {
+    const debugImages = ref([])
+    const selectedImage = ref('')
 
-  data () {
-    return {
-      net: null, // Posenet model
+    const selectedImageSrc = computed(() => {
+      if (selectedImage.value === '') {
+        return ''
+      }
+      return require(`~/assets/images/debug/${selectedImage.value}`)
+    })
 
-      frameWidth: 300,
-      frameHeight: 540,
+    onMounted(async () => {
+      debugImages.value = await root.$axios.$get('/api/images/debug')
+      selectedImage.value = debugImages.value[0]
+    })
 
-      mirrorImages: []
+    let net = null
+    const mirrorImages = ref([])
+    const { loadPosenetModel, normalizedPoseRef, detectPoseOnce } = usePoseNetEstimation()
+
+    const estimateAndMatchPose = async ({ target }) => {
+      if (net === null) {
+        net = await loadPosenetModel()
+      }
+      detectPoseOnce(target, net)
     }
-  },
 
-  async asyncData ({ $axios }) {
-    // Load the list of debugging images
-    const debugImages = await $axios.$get('/api/images/debug')
+    watch(async () => {
+      if (normalizedPoseRef.value) {
+        mirrorImages.value = await root.$axios.$post('/api/searchTree/nearestMatches/5', { userPose: normalizedPoseRef.value })
+      }
+    })
+
     return {
       debugImages,
-      selectedImage: debugImages[0]
-    }
-  },
-
-  methods: {
-    async estimateAndMatchPose ({ target }) {
-      const pose = await this.estimatePose(target)
-
-      if (!pose) {
-        return
-      }
-
-      // Vectorize and normalize the pose
-      const [vectorXY, vectorConfidence] = vectorizeAndNormalize(pose, {})
-
-      // Get 5 most similar mirror images from vptree
-      this.mirrorImages = await this.$axios.$post('/api/searchTree/nearestMatches/5', { userPose: { vectorXY, vectorConfidence } })
+      selectedImage,
+      selectedImageSrc,
+      mirrorImages,
+      estimateAndMatchPose
     }
   }
 }

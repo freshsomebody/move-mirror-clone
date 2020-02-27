@@ -1,8 +1,8 @@
 <template>
   <div class="progressBar">
     <div
-      class="progress"
       :style="{ width: progressPercentage }"
+      class="progress"
     />
 
     <b class="message">
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { computed } from '@vue/composition-api'
+
 export default {
   props: {
     totalTaskCount: {
@@ -36,11 +38,13 @@ export default {
     }
   },
 
-  computed: {
-    progressPercentage () {
-      const percentage = this.finishedTaskCount / this.totalTaskCount
+  setup (props) {
+    const progressPercentage = computed(() => {
+      const percentage = props.finishedTaskCount / props.totalTaskCount
       return `${percentage * 100}%`
-    }
+    })
+
+    return { progressPercentage }
   }
 }
 </script>

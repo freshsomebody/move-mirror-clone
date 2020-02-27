@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { ref } from '@vue/composition-api'
 import CameraAndSkeleton from '@/components/CameraAndSkeleton'
 
 export default {
@@ -30,17 +31,17 @@ export default {
     CameraAndSkeleton
   },
 
-  data () {
-    return {
-      mirrorImage: null
-    }
-  },
+  setup (props, { root }) {
+    const mirrorImage = ref(null)
 
-  methods: {
-    // Get the most similar mirror image from vptree
-    async getMirrorPose (pose) {
-      const nearestImages = await this.$axios.$post('/api/searchTree/nearestMatches/1', { userPose: pose })
-      this.mirrorImage = nearestImages[0]
+    const getMirrorPose = async (pose) => {
+      const nearestImages = await root.$axios.$post('/api/searchTree/nearestMatches/1', { userPose: pose })
+      mirrorImage.value = nearestImages[0]
+    }
+
+    return {
+      mirrorImage,
+      getMirrorPose
     }
   }
 }
