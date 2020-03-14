@@ -31,8 +31,8 @@
 
         <button
           v-if="poseEstimationCompleted"
-          class="btnDelete"
           @click="deleteImage(index)"
+          class="btnDelete"
         >
           X
         </button>
