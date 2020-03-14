@@ -33,7 +33,7 @@ The left side is the most similar mirror image at this moment.
 ### Mirror images
 Mirror images are used to match the pose in the user webcam video and are stored at **~assets/images/mirror-poses**.
 
-> **NOTE:** You will need to rebuild the vp tree whenever you update the mirror image base. Please refer the vp tree section.
+> **NOTE:** You will need to rebuild the vp tree whenever you update the mirror image base. Please refer the [vp tree section](#vp-tree).
 
 ### Debugging images
 Stored at **~assets/images/debug** and used for the debugging tool [http://localhost:3000/debug/matching](http://localhost:3000/debug/matching).
@@ -59,3 +59,11 @@ There are 2 debugging tools:
 
 #### [http://localhost:3000/debug/matching](http://localhost:3000/debug/matching)
 - Monitor the matching quality by matching the debugging images with the mirror images in vp tree
+
+### Add/ replace mirror images
+Following steps describe how you can add or replace the existing mirror images.
+1. Add/ replace images in folder **assets/images/mirror-poses**
+2. Start server in dev mode by executing `npm run dev` in your terminal
+3. Open the mirror image debugging page: [http://localhost:3000/debug/mirrorimages](http://localhost:3000/debug/mirrorimages) in the browser. You should see all your mirror images displayed here
+4. Wait for the debugging page finishing estimating all poses in mirror images
+5. Click the `Build search tree` button at the top-left corner to build the vp tree
