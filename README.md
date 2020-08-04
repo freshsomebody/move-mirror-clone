@@ -8,7 +8,7 @@ Recommend to have a look at it if you are interested in some background stories 
 
 ``` bash
 # install dependencies
-$ npm run install
+$ npm install
 
 # serve with hot reload at localhost:3000
 $ npm run dev
